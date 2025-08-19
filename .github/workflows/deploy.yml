@@ -2,8 +2,8 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main] # main 브랜치에 push 될 때마다 실행
-  workflow_dispatch: # 수동 실행도 가능
+    branches: [ main ]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -19,20 +19,20 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: use_effect # 실제 package.json 있는 폴더
+        working-directory: use_effect   # package.json 있는 폴더
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.18.0 # LTS 권장
+          node-version: 22.18.0
           cache: npm
           cache-dependency-path: use_effect/package-lock.json
       - run: npm ci
-      - run: npm run build # Vite 빌드 (dist 폴더 생성)
+      - run: npm run build
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: use_effect/dist # 빌드 산출물 위치
+          path: use_effect/dist
   deploy:
     needs: build
     runs-on: ubuntu-latest
